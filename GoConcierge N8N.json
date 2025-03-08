@@ -1,0 +1,230 @@
+{
+  "name": "Demo Chat Pedidos",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {
+          "loadPreviousSession": "memory"
+        }
+      },
+      "id": "025daf7e-974c-4836-b657-ac4507d0fde0",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        60
+      ],
+      "webhookId": "4170782c-1eed-4fd4-a2c3-3ab245ea65c3"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Você é o Gociérge, um assistente de vendas de e-commerce que deve conversar com cliente e ajudar uma estampa que ele está procurando. O cliente pode ser bem direto sobre a estampa ou também pode estar em duvida, então você deve entender os seus gostos para encontrar a estampa ideal e direcionar para fazer a venda.\n\nA base de dados é composta pelo tipo do produto e palavras chaves \n\nInstruções para o Assistente:\n\nDurante a conversa com o cliente, tente descobrir seus hobbies e gostos para relacionar com os temas das estampas disponíveis.\n\nApós a seleção do produto, ofereça a opção de finalizar a compra e caso o cliente confirme, traga um texto informando que a compra foi finalizada.\n\nA partir da conversa da conversa com o cliente extraia palavras chaves relacionadas ao tipo de produto, cor e estampa para fazer uma busca no typesense para buscar os produtos.\n\nExemplos de palavras-chave: \"mochila\", \"necessaire\", \"copo térmico\", \"garrafa térmica\", \"preto\", \"azul\", \"vermelho\", \"branco\", \"cinza\", \"verde\", \"amarelo\", \"roxo\", \"marrom\", \"bege\", \"floral\", \"listrado\", \"sem estampa\", \"minimalista\". Porém não se limite só à esses casos.\n\nTodas as informações devem ser levados em consideração para encontrar as estampas, apenas se o cliente perguntar explicitamente sobre um tipo de produto ou caso ele decida a estampa e não tenha ainda decidido o produto, que a conversa deverá ser direcionada para a escolha do produto.\n\nApós entender melhor o gosto do cliente, pesquise no Typesense para sugerir até 1 estampa que atenda a essas preferências. Caso não encontre o produto exato, sugira produtos próximos que se alinhem com as preferências do cliente.\n\nCaso não encontre produtos que atendam à solicitação, peça desculpas e tente encontrar na base outras estampas baseado na personalidade do cliente, de forma mais geral, por exemplo se um esporte é citado, trazer outras estampas relacionadas à esporte.\n\nSe o cliente confirmar que deseja finalizar a compra, faça só a confirmação dos dados de endereço, então envie uma chave pix para realização do pagamento e aguarde o cliente confirmar que fez o pagamento, então retorne ao cliente que a compra foi um sucesso.\n\nNo momento de indicar os produtos para o cliente traga apenas a descrição do produto\n\nNa hora das palavras chave, use sempre os nomes das cores no masculino.\n\nTente diversificar as palavras chaves, caso fale de cores neutras, traga cores que remetam à essa característica, e faça esse mesmo processo para outras características.\n\nA base de estampas é bem genérica sobre os temas, entenda o gosto do cliente, mas não pergunte sobre marcas ou empresas.\n\nResponda de acordo com o idioma do cliente.\n\nTodas as garrafas brancas estão sem estoque, caso o cliente escolha essa cor, avise que está sem estoque, e pergunte se ele quer receber um aviso quando voltar e aguarde ele responder, só então ofereça outros produtos.\n\nSempre que for listar os produtos coloque um < antes e um > de cada produto para ser possível identificar a área do produto em um pós processamento\n\nLembre que após a escolha do produto, sempre pergunte se ele quer fazer a compra, só após a resposta positiva, leve ele para o fluxo de compra com a solicitação de dados.\n"
+        }
+      },
+      "id": "7ba672ff-041c-4773-82f0-13985cbab4cf",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        560,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## 👋 Welcome to n8n!\nThis example shows how to build an AI Agent that interacts with your \ncalendar.\n\n### 1. Connect your accounts\n- Set up your [OpenAI credentials](https://docs.n8n.io/integrations/builtin/credentials/openai/?utm_source=n8n_app&utm_medium=credential_settings&utm_campaign=create_new_credentials_modal) in the `OpenAI Model` node \n- Connect your Google account in the `Google Calendar` node credentials section\n\n### 2. Ready to test it?\nClick Chat below and start asking questions! For example you can try `What meetings do I have today?`",
+        "height": 389,
+        "width": 319,
+        "color": 6
+      },
+      "id": "596ddd1d-aa11-4fd5-9fc3-b3b3dcbdb49a",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e23581cd-b2bc-48fe-b129-90f9c6c082fe",
+      "name": "OpenAI Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        520,
+        220
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "KiiISe6v2ThuSeFv",
+          "name": "OpenAi account 9"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "id": "62868f7f-e63f-423a-96ab-0863ebd630a6",
+      "name": "Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        680,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### Want to learn more?\nWant to learn more about AI and how to apply it best in n8n? Have a look at our [new tutorial series on YouTube](https://www.youtube.com/watch?v=yzvLfHb0nqE&lc).",
+        "height": 100,
+        "width": 317,
+        "color": 6
+      },
+      "id": "0235d373-f8fa-471c-95a9-643f601f7a3e",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Use para buscar pelos produtos baseados nas palavras chaves inferidas na conversa",
+        "url": "https://bd1d-200-150-133-126.ngrok-free.app/collections/produtos/documents/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "parametersQuery": {
+          "values": [
+            {
+              "name": "limit",
+              "valueProvider": "fieldValue",
+              "value": "50"
+            },
+            {
+              "name": "query_by",
+              "valueProvider": "fieldValue",
+              "value": "Nome do Produto,Cor,Estampa,Descrição,Palavras-chave"
+            },
+            {
+              "name": "q"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        840,
+        220
+      ],
+      "id": "1bb1018f-d27f-4d54-8868-c2fcbb29f702",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "AZoRbM7gqwzzcjjX",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -320,
+        280
+      ],
+      "id": "ba9e0735-46ea-4789-9376-49def75801f0",
+      "name": "Window Buffer Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "When chat message received",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6486a9ea-ddc3-4b8e-857a-387d3a4d34ec",
+  "meta": {
+    "templateId": "PT1i+zU92Ii5O2XCObkhfHJR5h9rNJTpiCIkYJk9jHU=",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "56c996895454f2c378d95472e9e4f79954d0d177b1ed0bbeadc22a88126eea2c"
+  },
+  "id": "BH8SWwA4gQNZasSV",
+  "tags": []
+}
