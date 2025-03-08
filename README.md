@@ -22,7 +22,7 @@ python import_to_typesense.py
 ```
 
 ## Configuração do N8N
-Importe o arquivo `GoConcierge N8N.json` no N8N. Após a importação, atualize as variáveis de chave presentes no workflow para disponibilizar o agente ao público.
+Importe o arquivo `N8N.json` no N8N. Após a importação, atualize as variáveis de chave presentes no workflow para disponibilizar o agente ao público.
 
 ## Comunicação com o Bot
 Para se comunicar com o bot, faça um POST na URL do webhook do workflow do N8N. O corpo da requisição deve conter `sessionId` e `chatInput`. A resposta será um JSON com a chave `output`.
